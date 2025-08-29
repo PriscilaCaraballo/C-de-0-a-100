@@ -87,7 +87,7 @@ int busqueda(int *arr, int tamano, int valor) {
     {
         if (arr[i] == valor)
         {
-            printf("Lo encontre en la posicion: %d", i);
+            printf("Lo encontre en la posicion: %d \n", i);
             return i;
         } 
         
@@ -130,82 +130,116 @@ int cambio;
         
 }
 
+void mostrar_menu(){
+    printf("-----------------------\n");
+    printf("|  -  SERVICIOS  -    |\n");
+    printf("| 1. LLENAR ARRAY     |\n");
+    printf("| 2.ELIMINAR ELEMENTOS|\n");
+    printf("| 3.AGRANDAR ARRAY    |\n");
+    printf("| 4.REALIZAR BUSQUEDA |\n");
+    printf("| 5.ORDENAR ARRAY     |\n");
+    printf("-----------------------\n");
+    printf("Seleccionar cualquier\n
+    otro numero te hara salir del menu\n");
+}
+
 int main() {
     int n;
+    int opcion;
     printf("Tamaño del array: ");
     scanf("%d", &n);
     int *numeros = crear_array(n);
     // Completar programa...
 
-    printf("vamos a llenar ese array papu.. \n");
-    llenar_array(numeros, n);
+    while (1) {
+        mostrar_menu();
+        //si opcion no es un numero
+        if(scanf("%d", &opcion) != 1 ){
+            //imprimir entrada invalida
+            printf ("Entrada invalida \n");
+            //limpiar buffer
+            while (getchar() != '\n');
+             //continuar
+            continue;
+        }
 
-    printf("aca esta tu array llenito pa: \n");
-    imprimir_array(numeros, n);
-    
-    printf("quieres eliminar elementos del array?\n");
-    printf("Y[yes] / N[no]\n");
-    char y;
-    scanf(" %c", &y);
-    if(y == 'Y' || y == 'y') {
-        numeros = eliminar(numeros, n);
-        n = n - 1;
-        imprimir_array(numeros, n);
-    } 
+        switch (opcion)
+        {
+        case 1:
+            printf("vamos a llenar ese array papu.. \n");
+            llenar_array(numeros, n);
 
-    
-    //funcioona agragar o agrandar array
-    printf("quieres agrandar el array?\n");
-    printf("Y[yes] / N[no]\n");
-    char v;
-    scanf(" %c", &v);
-    int new_n;
-    if(v == 'Y' || v == 'y') {
+            printf("aca esta tu array llenito pa: \n");
+            imprimir_array(numeros, n);
+            break;
         
-        printf("Tamaño del nuevo array (incluido el tamañon anterior)\n");
-        scanf("%d", &new_n);
+        case 2:
+            printf("quieres eliminar elementos del array?\n");
+            printf("Y[yes] / N[no]\n");
+            char y;
+            scanf(" %c", &y);
+            if(y == 'Y' || y == 'y') {
+                numeros = eliminar(numeros, n);
+                n = n - 1;
+                imprimir_array(numeros, n);
+            }
+            break;
+        case 3:
+            //funcioona agragar o agrandar array
+            printf("quieres agrandar el array?\n");
+            printf("Y[yes] / N[no]\n");
+            char v;
+            scanf(" %c", &v);
+            int new_n;
+            if(v == 'Y' || v == 'y') {
+                
+                printf("Tamaño del nuevo array (incluido el tamañon anterior)\n");
+                scanf("%d", &new_n);
 
-        while (new_n <= n) {
-            printf("El nuevo tamaño debe ser mayor que el actual\n");
-            scanf("%d", &new_n);
-        }
+                while (new_n <= n) {
+                    printf("El nuevo tamaño debe ser mayor que el actual\n");
+                    scanf("%d", &new_n);
+                }
 
-        numeros = crear_array_grande(numeros, new_n);
-        //numeros = nuevo_arr;
+                numeros = crear_array_grande(numeros, new_n);
+                //numeros = nuevo_arr;
 
-        for(int i = n; i < new_n; i++) {
-            printf("¿Con qué vas a llenar el nuevo elemento? \n");
-            scanf("%d", &numeros[i]);
-        }
-        imprimir_array(numeros, new_n);
-    } 
-
-    printf("queres realizar una busquueda?\n");
-    printf("Y[yes] / N[no]\n");
-    char x;
-    int valor;
-    scanf(" %c", &x);
-    if(x == 'Y' || x == 'y') {
-        printf("que queres buscar corazon (valor)? \n");
-        scanf("%d", &valor);
-        int resultado = busqueda(numeros, n, valor);
-        if (resultado == -1) {
-            printf("no esta ese valor en el array bobolon\n");
+                for(int i = n; i < new_n; i++) {
+                    printf("¿Con qué vas a llenar el nuevo elemento? \n");
+                    scanf("%d", &numeros[i]);
+                }
+                imprimir_array(numeros, new_n);
+                n = new_n;
+            }
+            break;
+        case 4:
+            printf("queres realizar una busqueda?\n");
+            printf("Y[yes] / N[no]\n");
+            char x;
+            int valor;
+            scanf(" %c", &x);
+            if(x == 'Y' || x == 'y') {
+                printf("que queres buscar corazon (valor)? \n");
+                scanf("%d", &valor);
+                int resultado = busqueda(numeros, n, valor);
+                if (resultado == -1) {
+                    printf("no esta ese valor en el array bobolon\n");
+                }
+            }
+            break;
+        case 5:
+            printf("Ordenamos el array de forma ascendente[1]\n o de forma descendete[2]?\n");
+            int forma;
+            scanf("%d", &forma);
+            ordenar(numeros, n, forma);
+            printf("Nuevo array ordenado: " );
+            imprimir_array(numeros, n);
+            break;
+        default:
+            printf("Saliendo del programa...\n");
+            printf("\n vamos a liberar ese array");
+            liberar_array(numeros);
+            return 0;
         }
     }
-
-    printf("Ordenamos el array de forma ascendente?\n");
-    printf("Y[yes] / N[no]\n");
-    char o;
-    int forma = 1;
-    scanf(" %c", &o);
-    if(o == 'Y' || o == 'y') {
-        ordenar(numeros, n, forma);
-        printf("Nuevo array ordenado: " );
-        imprimir_array(numeros, n);
-    }
-
-    printf("\n vamos a liberar ese array");
-    liberar_array(numeros);
-    return 0;
 }
