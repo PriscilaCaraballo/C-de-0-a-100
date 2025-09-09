@@ -151,7 +151,7 @@ int main() {
     int *numeros = crear_array(n);
     // Completar programa...
 
-    while (1) {
+    while (1) { 
         mostrar_menu();
         //si opcion no es un numero
         if(scanf("%d", &opcion) != 1 ){
