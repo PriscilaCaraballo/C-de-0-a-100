@@ -45,3 +45,78 @@ Curso* crear_curso(int capacidad_inicial) {
 
 }
 
+// Agrega un estudiante al curso
+int agregar_estudiante(Curso *curso, const char *nom, int ed, float alt, char gen) {
+    if (curso->cantidad >= curso->capacidad)
+    {
+        printf("curso lleno");
+        return 1;
+    }
+
+
+    strcpy(curso->estudiantes[curso->cantidad].nombre, nom);
+    curso->estudiantes[curso->cantidad].edad = ed;
+    curso->estudiantes[curso->cantidad].altura = alt;
+    curso->estudiantes[curso->cantidad].genero = gen;
+    
+    curso->cantidad++;
+    return 0;
+
+}
+
+
+int main () {
+    int capacidad;
+    printf("Ingrese la capacidad del curso: ");
+    scanf("%d", &capacidad);
+
+    Curso *curso = crear_curso(capacidad);
+    if (curso == NULL) return 1;
+
+    char nombre[51];
+    int edad;
+    float altura;
+    char genero;
+    int resultado;
+
+    while (curso->cantidad < curso->capacidad) {
+        printf("\nIngrese el nombre del estudiante (max 49 caracteres): ");
+        scanf(" %[^\n]", nombre);
+
+        if (strlen(nombre) >= 50) {
+            printf("Nombre demasiado largo, intente nuevamente.\n");
+            continue;
+        }
+
+        printf("Ingrese la edad: ");
+        scanf("%d", &edad);
+        printf("Ingrese la altura: ");
+        scanf("%f", &altura);
+        printf("Ingrese el genero (M/F): ");
+        scanf(" %c", &genero);
+
+        resultado = agregar_estudiante(curso, nombre, edad, altura, genero);
+        if (resultado == 1) {
+            printf("Curso lleno, no se puede agregar más estudiantes.\n");
+            break;
+        } else {
+            printf("Estudiante agregado con éxito.\n");
+        }
+    }
+
+    // printf("\nLista de estudiantes:\n");
+    // for (int i = 0; i < curso->cantidad; i++) {
+    //     printf("%d. %s, %d años, %.2f m, %c\n",
+    //            i + 1,
+    //            curso->estudiantes[i].nombre,
+    //            curso->estudiantes[i].edad,
+    //            curso->estudiantes[i].altura,
+    //            curso->estudiantes[i].genero);
+    // }
+    
+
+    //borrar despues
+    free(curso->estudiantes);
+    free(curso);
+    return 0;
+}
