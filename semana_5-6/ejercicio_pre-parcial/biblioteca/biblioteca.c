@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 typedef struct {
     char nombre[50];
@@ -64,6 +65,16 @@ int agregar_estudiante(Curso *curso, const char *nom, int ed, float alt, char ge
 
 }
 
+// Busca un estudiante por nombre
+Estudiante* buscar_estudiante(Curso *curso, const char *nombre) {
+    for (int i = 0; i < curso->cantidad; i++) {
+        if (strcmp(curso->estudiantes[i].nombre, nombre)){
+            return &curso->estudiantes[i];
+        }
+    
+    }
+    return NULL;
+}
 
 int main () {
     int capacidad;
@@ -104,16 +115,30 @@ int main () {
         }
     }
 
-    // printf("\nLista de estudiantes:\n");
-    // for (int i = 0; i < curso->cantidad; i++) {
-    //     printf("%d. %s, %d años, %.2f m, %c\n",
-    //            i + 1,
-    //            curso->estudiantes[i].nombre,
-    //            curso->estudiantes[i].edad,
-    //            curso->estudiantes[i].altura,
-    //            curso->estudiantes[i].genero);
-    // }
-    
+    printf("\nLista de estudiantes:\n");
+    for (int i = 0; i < curso->cantidad; i++) {
+        printf("%d. %s, %d años, %.2f m, %c\n", 
+        i + 1,
+        curso->estudiantes[i].nombre,
+        curso->estudiantes[i].edad,
+        curso->estudiantes[i].altura,
+        curso->estudiantes[i].genero);
+    }
+
+    char nombre_buscar[51];
+    printf("nombre del estudiante a buscar: \n");
+    scanf(" %[^\n]", nombre_buscar);
+
+    Estudiante *busqueda = buscar_estudiante(curso, nombre_buscar);
+    if (busqueda != NULL) {
+        printf("Estudiante encontrado: %s, %d años, %.2f m, %c\n", 
+        busqueda->nombre,
+        busqueda->edad,
+        busqueda->altura,
+        busqueda->genero);
+    } else {
+        printf("Estudiante no encontrado.\n");
+    }
 
     //borrar despues
     free(curso->estudiantes);
