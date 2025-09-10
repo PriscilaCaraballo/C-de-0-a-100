@@ -76,6 +76,21 @@ Estudiante* buscar_estudiante(Curso *curso, const char *nombre) {
     return NULL;
 }
 
+// Retorna el estudiante de mayor edad
+Estudiante* estudiante_mayor_edad(Curso *curso) {
+    
+    int mayor_edad = curso->estudiantes[0].edad;
+    Estudiante *estudiante_mayor = &curso->estudiantes[0];
+    for (int i = 1; i < curso->cantidad; i++) {
+        if (curso->estudiantes[i].edad > mayor_edad){
+            mayor_edad = curso->estudiantes[i].edad;
+            estudiante_mayor = &curso->estudiantes[i];
+        }
+        return estudiante_mayor;
+    }
+}
+
+
 int main () {
     int capacidad;
     printf("Ingrese la capacidad del curso: ");
@@ -140,6 +155,17 @@ int main () {
         printf("Estudiante no encontrado.\n");
     }
 
+    Estudiante *mayor = estudiante_mayor_edad(curso);
+    if (mayor != NULL) {
+        printf("Estudiante con mayor edad encontrado: %s, %d años, %.2f m, %c\n", 
+        mayor->nombre,
+        mayor->edad,
+        mayor->altura,
+        mayor->genero);
+    } else {
+        printf("array vacio\n");
+    }
+    
     //borrar despues
     free(curso->estudiantes);
     free(curso);
