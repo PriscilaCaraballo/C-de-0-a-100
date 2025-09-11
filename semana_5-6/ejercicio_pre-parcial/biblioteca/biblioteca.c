@@ -68,10 +68,9 @@ int agregar_estudiante(Curso *curso, const char *nom, int ed, float alt, char ge
 // Busca un estudiante por nombre
 Estudiante* buscar_estudiante(Curso *curso, const char *nombre) {
     for (int i = 0; i < curso->cantidad; i++) {
-        if (strcmp(curso->estudiantes[i].nombre, nombre)){
+        if (strcmp(curso->estudiantes[i].nombre, nombre) == 0){
             return &curso->estudiantes[i];
         }
-    
     }
     return NULL;
 }
@@ -81,15 +80,26 @@ Estudiante* estudiante_mayor_edad(Curso *curso) {
     
     int mayor_edad = curso->estudiantes[0].edad;
     Estudiante *estudiante_mayor = &curso->estudiantes[0];
-    for (int i = 1; i < curso->cantidad; i++) {
+    for (int i = 0; i < curso->cantidad; i++) {
         if (curso->estudiantes[i].edad > mayor_edad){
             mayor_edad = curso->estudiantes[i].edad;
             estudiante_mayor = &curso->estudiantes[i];
         }
-        return estudiante_mayor;
     }
+     return estudiante_mayor;
 }
 
+// Retorna el promedio de edades del curso
+float promedio_edades(Curso *curso) {
+    if (curso->cantidad == 0) {
+        return -1; 
+    }
+    int conteo = 0;
+    for (int i = 0; i < curso->cantidad; i++) {
+            conteo += curso->estudiantes[i].edad;
+    }
+    return (float)conteo / curso->cantidad;
+}
 
 int main () {
     int capacidad;
@@ -165,7 +175,14 @@ int main () {
     } else {
         printf("array vacio\n");
     }
-    
+
+   float promedio = promedio_edades(curso);
+    if (promedio != -1) {
+        printf("Promedio de todas las edades: %.2f", promedio);
+    } else {
+        printf("array vacio\n");
+    }
+
     //borrar despues
     free(curso->estudiantes);
     free(curso);
